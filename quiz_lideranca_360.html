@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Liderança 360° - Descubra seu Perfil</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            max-width: 600px;
+            width: 100%;
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .question-section {
+            margin-bottom: 40px;
+        }
+        
+        .section-title {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+            border-left: 5px solid #4facfe;
+        }
+        
+        .question {
+            margin-bottom: 25px;
+            padding: 20px;
+            border: 1px solid #eee;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .question:hover {
+            border-color: #4facfe;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .question h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+        
+        .scale {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .scale-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .scale-option input {
+            margin-bottom: 5px;
+            transform: scale(1.2);
+        }
+        
+        .scale-option:hover {
+            transform: scale(1.1);
+        }
+        
+        .scale-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            font-size: 0.9em;
+            color: #666;
+        }
+        
+        .submit-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 25px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: block;
+            margin: 30px auto;
+            min-width: 200px;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+        
+        .result {
+            display: none;
+            text-align: center;
+        }
+        
+        .profile {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+        
+        .profile h2 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+        
+        .scores {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .score-item {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 5px solid #4facfe;
+        }
+        
+        .score-bar {
+            background: #eee;
+            height: 10px;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+        
+        .score-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4facfe, #00f2fe);
+            border-radius: 5px;
+            transition: width 1s ease-in-out;
+        }
+        
+        .recommendations {
+            text-align: left;
+            background: #fff;
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 20px;
+        }
+        
+        .recommendations h3 {
+            color: #333;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #4facfe;
+            padding-bottom: 10px;
+        }
+        
+        .recommendations ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .recommendations li {
+            margin-bottom: 10px;
+            padding-left: 25px;
+            position: relative;
+        }
+        
+        .recommendations li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #4facfe;
+            font-weight: bold;
+        }
+        
+        .restart-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 20px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .restart-btn:hover {
+            background: #218838;
+            transform: translateY(-2px);
+        }
+        
+        @media (max-width: 768px) {
+            .scale {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .scale-option {
+                flex-direction: row;
+                gap: 10px;
+            }
+            
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌟 Líder 360° 🌟</h1>
+            <p>Descubra seu perfil de liderança e receba seu plano personalizado</p>
+        </div>
+        
+        <div class="content">
+            <div id="quiz">
+                <!-- LIDERAR A SI MESMO -->
+                <div class="question-section">
+                    <div class="section-title">🎯 LIDERAR A SI MESMO</div>
+                    
+                    <div class="question">
+                        <h3>1. Com que frequência você cumpre os prazos que estabelece para si mesmo?</h3>
+                        <div class="scale">
+                            <div class="scale-option">
+                                <input type="radio" name="q1" value="1" id="q1_1">
+                                <label for="q1_1">1</label>
+                            </div>
+                            <div class="scale-option">
+                                <input type="radio" name="q1" value="2" id="q1_2">
+                                <label for="q1_2">2</label>
+                            </div>
+                            <div class="scale-option">
+                                <input type="radio" name="q1" value="3" id="q1_3">
+                                <label for="q1_3">3</label>
+                            </div>
+                            <div class="scale-option">
+                                <input type="radio" name="q1" value="4" id="q1_4">
+                                <label for="q1_4">4</label>
+                            </div>
+                            <div class="scale-option">
+                                <input type="radio" name="q1" value="5" id="q1_5">
+                                <label for="q1_5">5</label>
+                            </div>
+                        </div>
+                        <div class="scale-labels">
+                            <span>Nunca</span>
+                            <span>Raramente</span>
+                            <span>Às vezes</span>
+                            <span>Frequentemente</span>
+                            <span>Sempre</span>
+                        </div>
+                    </div>
+                    
+                    <div class="question">
+                        <h3>2. Você mantém uma atitude positiva mesmo em situações desafiadoras?</h3>
+                        <div class="scale">
+                            <div class="scale-option">
+                                <input type="radio" name="q2" value="1" id="q2_1">
+                                <label for="q2_1">1</label>
+                            </div>
+                            <div class="scale-option">
+                                <input type="radio" name="q2" value="2" id="q2_2">
+                                <label for="q2_2">2</label>
+                            </div>
+                            <div class="scale-option">
+                                <input type="radio" name="q2" value="3" id="q2_3">
+                                <label for="q2_3">3</label>
+                            </div>
+                            <div class="scale-option">
+                                <input type="radio" name="q2" value="4" id="q2_4">
+                                <label for="q2_4">4</label>
+                            </div>
+                            <div class="scale-option">
+                                <input type="radio" name="q2" value="5" id="q2_5">
+                                <label for="q2_5">5</label>
+                            </div>
+                        </div>
+                        <div class="scale-labels">
+                            <span>Nunca</span>
+                            <span>Raramente</span>
+                            <span>Às vezes</span>
+                            <span>Frequentemente</span>
+                            <span>Sempre</span>
+                        </div>
+                    </div>
+                    
+                    <div class="question">
+                        <h3>3. Você busca constantemente aprender e se desenvolver profissionalmente?</h3>
+                        <div class="scale">
+                            <div class="scale-option">
+                                <input type="radio" name="q3" value="1" id="q3_1">
+                                <label for="q3_1">1</label>
+                            </div>
+                            <div class="scale-option">
+                                <input type="radio" name="q3" value="2" id="q3_2">
+                                <label for="q3_2">2</label>
+                            </div>
+                            <div class="scale-option">
+                                <input type="radio" name="q3" value="3" id="q3_3">
+                                <label for="q3_3">3</label>
+                            </div>
+                            <div class="scale-option">
+                                <input type="radio" name="q3" value="4" id="q3_4">
+                                <label for="q3_4">4</label>
+                            </div>
+                            <div class="scale-option">
+                                <input type="radio" name="q3" value="5" id="q3_5">
+                                <label for="q3_5">5</label>
+                            </div>
+                        </div>
+                        <div class="scale-labels">
+                            <span>Nunca</span>
+                            <span>Raramente</span>
+                            <span>Às vezes</span>
+                            <span>Frequentemente</span>
+                            <span>Sempre</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- LIDERAR PARA CIMA -->
+                <div class="question-section">
+                    <div class="section-title">⬆️ LIDERAR PARA CIMA</div>
+                    
+                    <div class="question">
+                        <h3>4. Você antecipa as necessidades do seu gestor sem ele precisar pedir?</h3>
+                        <div class="scale">
+                            <div class="scale-option">
+                                <input type="radio" name="q4" value="1" id="q4_1">
+                                <label for="q4_1">1</label>
+                            </div>
+                            <div class="scale-option">
+                                <input type="radio" name="q4" value="2" id="q4_2">
+                                <label for="q4_2">2</label>
+                            </div>
+                            <div class="scale-option">
+                                <input type="radio" name="q4" value="3" id="q4_3">
+                                <label for="q4_3">3</label>
+                            </div>
+                            <div class="scale-option">
+                                <input type="radio" name="q4" value="4" id="q4_4">
+                                <label for="q4_4">4</label>
+                            </div>
+                            <div class="scale-option">
+                                <input type="radio" name="q4" value="5" id="q4_5">
+                                <label for="q4_5">5</label>
+                            </div>
+                        </div>
+                        <div class="scale-labels">
+                            <span>Nunca</span>
+                            <span>Raramente</span>
+                            <span>Às vezes</span>
+                            <span>Frequentemente</span>
+                            <span>Sempre</span>
+                        </div>
+                    </div>
+                    
+                    <div class="question">
+                        <h3>5. Quando identifica um problema, você já apresenta possíveis soluções?</h3>
+                        <div class="scale">
+                            <div class="scale-option">
+                                <input type="radio" name="q5" value="1" id="q5_1">
+                                <label for="q5_1">1</label>
+                            </div>
+                            <div class="scale-option">
+                                <input type="radio" name="q5" value="2" id="q5_2">
+                                <label for="q5_2">2</label>
+                            </div>
+                            <div class="scale-option">
+                                <input type="radio" name="q5" value="3" id="q5_3">
+                                <label for="q5_3">3</label>
+                            </div>
+                            <div class="scale-option">
+                                <input type="radio" name="q5" value="4" id="q5_4">
+                                <label for="q5_4">4</label>
+                            </div>
+                            <div class="scale-option">
+                                <input type="radio" name="q5" value="5" id="q5_5">
+                                <label for="q5_5">5</label>
+                            </div>
+                        </div>
+                        <div class="scale-labels">
+                            <span>Nunca</span>
+                            <span>Raramente</span>
+                            <span>Às vezes</span>
+                            <span>Frequentemente</span>
+                            <span>Sempre</span>
+                        </div>
+                    </div>
+                    
+                    <div class="question">
+                        <h3>6. Você facilita o trabalho do seu superior através de suas ações e atitudes?</h3>
+                        <div class="scale">
+                            <div class="scale-option">
+                                <input type="radio" name="q6" value="1" id="q6_1">
+                                <label for="q6_1">1</label>
+                            </div>
+                            <div class="scale-option">
+                                <input type="radio" name="q6" value="2" id="q6_2">
+                                <label for="q6_2">2</label>
+                            </div>
+                            <div class="scale-option">
+                                <input type="radio" name="q6" value="3" id="q6_3">
+                                <label for="q6_3">3</label>
+                            </div>
+                            <div class="scale-option">
+                                <input type="radio" name="q6" value="4" id="q6_4">
+                                <label for="q6_4">4</label>
+                            </div>
+                            <div class="scale-option">
+                                <input type="radio" name="q6" value="5" id="q6_5">
+                                <label for="q6_5">5</label>
+                            </div>
+                        </div>
+                        <div class="scale-labels">
+                            <span>Nunca</span>
+                            <span>Raramente</span>
+                            <span>Às vezes</span>
+                            <span>Frequentemente</span>
+                            <span>Sempre</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- LIDERAR PARA OS LADOS -->
+                <div class="question-section">
+                    <div class="section-title">↔️ LIDERAR PARA OS LADOS</div>
+                    
+                    <div class="question">
+                        <h3>7. Você oferece ajuda aos colegas quando percebe que estão sobrecarregados?</h3>
+                        <div class="scale">
+                            <div class="scale-option">
+                                <input type="radio" name="q7" value="1" id="q7_1">
+                                <label for="q7_1">1</label>
+                            </div>
+                            <div class="scale-option">
+                                <input type="radio" name="q7" value="2" id="q7_2">
+                                <label for="q7_2">2</label>
+                            </div>
+                            <div class="scale-option">
+                                <input type="radio" name="q7" value="3" id="q7_3">
+                                <label for="q7_3">3</label>
+                            </div>
+                            <div class="scale-option">
+                                <input type="radio" name="q7" value="4" id="q7_4">
+                                <label for="q7_4">4</label>
+                            </div>
+                            <div class="scale-option">
+                                <input type="radio" name="q7" value="5" id="q7_5">
+                                <label for="q7_5">5</label>
+                            </div>
+                        </div>
+                        <div class="scale-labels">
+                            <span>Nunca</span>
+                            <span>Raramente</span>
+                            <span>Às vezes</span>
+                            <span>Frequentemente</span>
+                            <span>Sempre</span>
+                        </div>
+                    </div>
+                    
+                    <div class="question">
+                        <h3>8. Você compartilha conhecimentos e informações úteis com seus colegas?</h3>
+                        <div class="scale">
+                            <div class="scale-option">
+                                <input type="radio" name="q8" value="1" id="q8_1">
+                                <label for="q8_1">1</label>
+                            </div>
+                            <div class="scale-option">
+                                <input type="radio" name="q8" value="2" id="q8_2">
+                                <label for="q8_2">2</label>
+                            </div>
+                            <div class="scale-option">
+                                <input type="radio" name="q8" value="3" id="q8_3">
+                                <label for="q8_3">3</label>
+                            </div>
+                            <div class="scale-option">
+                                <input type="radio" name="q8" value="4" id="q8_4">
+                                <label for="q8_4">4</label>
+                            </div>
+                            <div class="scale-option">
+                                <input type="radio" name="q8" value="5" id="q8_5">
+                                <label for="q8_5">5</label>
+                            </div>
+                        </div>
+                        <div class="scale-labels">
+                            <span>Nunca</span>
+                            <span>Raramente</span>
+                            <span>Às vezes</span>
+                            <span>Frequentemente</span>
+                            <span>Sempre</span>
+                        </div>
+                    </div>
+                    
+                    <div class="question">
+                        <h3>9. Você apoia e amplifica as boas ideias dos seus colegas?</h3>
+                        <div class="scale">
+                            <div class="scale-option">
+                                <input type="radio" name="q9" value="1" id="q9_1">
+                                <label for="q9_1">1</label>
+                            </div>
+                            <div class="scale-option">
+                                <input type="radio" name="q9" value="2" id="q9_2">
+                                <label for="q9_2">2</label>
+                            </div>
+                            <div class="scale-option">
+                                <input type="radio" name="q9" value="3" id="q9_3">
+                                <label for="q9_3">3</label>
+                            </div>
+                            <div class="scale-option">
+                                <input type="radio" name="q9" value="4" id="q9_4">
+                                <label for="q9_4">4</label>
+                            </div>
+                            <div class="scale-option">
+                                <input type="radio" name="q9" value="5" id="q9_5">
+                                <label for="q9_5">5</label>
+                            </div>
+                        </div>
+                        <div class="scale-labels">
+                            <span>Nunca</span>
+                            <span>Raramente</span>
+                            <span>Às vezes</span>
+                            <span>Frequentemente</span>
+                            <span>Sempre</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- LIDERAR PARA BAIXO -->
+                <div class="question-section">
+                    <div class="section-title">⬇️ LIDERAR PARA BAIXO</div>
+                    
+                    <div class="question">
+                        <h3>10. Você ensina e orienta novos funcionários ou colegas menos experientes?</h3>
+                        <div class="scale">
+                            <div class="scale-option">
+                                <input type="radio" name="q10" value="1" id="q10_1">
+                                <label for="q10_1">1</label>
+                            </div>
+                            <div class="scale-option">
+                                <input type="radio" name="q10" value="2" id="q10_2">
+                                <label for="q10_2">2</label>
+                            </div>
+                            <div class="scale-option">
+                                <input type="radio" name="q10" value="3" id="q10_3">
+                                <label for="q10_3">3</label>
+                            </div>
+                            <div class="scale-option">
+                                <input type="radio" name="q10" value="4" id="q10_4">
+                                <label for="q10_4">4</label>
+                            </div>
+                            <div class="scale-option">
+                                <input type="radio" name="q10" value="5" id="q10_5">
+                                <label for="q10_5">5</label>
+                            </div>
+                        </div>
+                        <div class="scale-labels">
+                            <span>Nunca</span>
+                            <span>Raramente</span>
+                            <span>Às vezes</span>
+                            <span>Frequentemente</span>
+                            <span>Sempre</span>
+                        </div>
+                    </div>
+                    
+                    <div class="question">
+                        <h3>11. Você oferece feedback construtivo para ajudar outros a melhorarem?</h3>
+                        <div class="scale">
+                            <div class="scale-option">
+                                <input type="radio" name="q11" value="1" id="q11_1">
+                                <label for="q11_1">1</label>
+                            </div>
+                            <div class="scale-option">
+                                <input type="radio" name="q11" value="2" id="q11_2">
+                                <label for="q11_2">2</label>
+                            </div>
+                            <div class="scale-option">
+                                <input type="radio" name="q11" value="3" id="q11_3">
+                                <label for="q11_3">3</label>
+                            </div>
+                            <div class="scale-option">
+                                <input type="radio" name="q11" value="4" id="q11_4">
+                                <label for="q11_4">4</label>
+                            </div>
+                            <div class="scale-option">
+                                <input type="radio" name="q11" value="5" id="q11_5">
+                                <label for="q11_5">5</label>
+                            </div>
+                        </div>
+                        <div class="scale-labels">
+                            <span>Nunca</span>
+                            <span>Raramente</span>
+                            <span>Às vezes</span>
+                            <span>Frequentemente</span>
+                            <span>Sempre</span>
+                        </div>
+                    </div>
+                    
+                    <div class="question">
+                        <h3>12. Você incentiva e motiva as pessoas ao seu redor?</h3>
+                        <div class="scale">
+                            <div class="scale-option">
+                                <input type="radio" name="q12" value="1" id="q12_1">
+                                <label for="q12_1">1</label>
+                            </div>
+                            <div class="scale-option">
+                                <input type="radio" name="q12" value="2" id="q12_2">
+                                <label for="q12_2">2</label>
+                            </div>
+                            <div class="scale-option">
+                                <input type="radio" name="q12" value="3" id="q12_3">
+                                <label for="q12_3">3</label>
+                            </div>
+                            <div class="scale-option">
+                                <input type="radio" name="q12" value="4" id="q12_4">
+                                <label for="q12_4">4</label>
+                            </div>
+                            <div class="scale-option">
+                                <input type="radio" name="q12" value="5" id="q12_5">
+                                <label for="q12_5">5</label>
+                            </div>
+                        </div>
+                        <div class="scale-labels">
+                            <span>Nunca</span>
+                            <span>Raramente</span>
+                            <span>Às vezes</span>
+                            <span>Frequentemente</span>
+                            <span>Sempre</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- LIDERAR PELO EXEMPLO -->
+                <div class="question-section">
+                    <div class="section-title">✨ LIDERAR PELO EXEMPLO</div>
+                    
+                    <div class="question">
+                        <h3>13. Você mantém padrões altos de qualidade e ética em seu trabalho?</h3>
+                        <div class="scale">
+                            <div class="scale-option">
+                                <input type="radio" name="q13" value="1" id="q13_1">
+                                <label for="q13_1">1</label>
+                            </div>
+                            <div class="scale-option">
+                                <input type="radio" name="q13" value="2" id="q13_2">
+                                <label for="q13_2">2</label>
+                            </div>
+                            <div class="scale-option">
+                                <input type="radio" name="q13" value="3" id="q13_3">
+                                <label for="q13_3">3</label>
+                            </div>
+                            <div class="scale-option">
+                                <input type="radio" name="q13" value="4" id="q13_4">
+                                <label for="q13_4">4</label>
+                            </div>
+                            <div class="scale-option">
+                                <input type="radio" name="q13" value="5" id="q13_5">
+                                <label for="q13_5">5</label>
+                            </div>
+                        </div>
+                        <div class="scale-labels">
+                            <span>Nunca</span>
+                            <span>Raramente</span>
+                            <span>Às vezes</span>
+                            <span>Frequentemente</span>
+                            <span>Sempre</span>
+                        </div>
+                    </div>
+                    
+                    <div class="question">
+                        <h3>14. Suas ações são coerentes com os valores que você defende?</h3>
+                        <div class="scale">
+                            <div class="scale-option">
+                                <input type="radio" name="q14" value="1" id="q14_1">
+                                <label for="q14_1">1</label>
+                            </div>
+                            <div class="scale-option">
+                                <input type="radio" name="q14" value="2" id="q14_2">
+                                <label for="q14_2">2</label>
+                            </div>
+                            <div class="scale-option">
+                                <input type="radio" name="q14" value="3" id="q14_3">
+                                <label for="q14_3">3</label>
+                            </div>
+                            <div class="scale-option">
+                                <input type="radio" name="q14" value="4" id="q14_4">
+                                <label for="q14_4">4</label>
+                            </div>
+                            <div class="scale-option">
+                                <input type="radio" name="q14" value="5" id="q14_5">
+                                <label for="q14_5">5</label>
+                            </div>
+                        </div>
+                        <div class="scale-labels">
+                            <span>Nunca</span>
+                            <span>Raramente</span>
+                            <span>Às vezes</span>
+                            <span>Frequentemente</span>
+                            <span>Sempre</span>
+                        </div>
+                    </div>
+                    
+                    <div class="question">
+                        <h3>15. Você é uma referência positiva de comportamento para outros na empresa?</h3>
+                        <div class="scale">
+                            <div class="scale-option">
+                                <input type="radio" name="q15" value="1" id="q15_1">
+                                <label for="q15_1">1</label>
+                            </div>
+                            <div class="scale-option">
+                                <input type="radio" name="q15" value="2" id="q15_2">
+                                <label for="q15_2">2</label>
+                            </div>
+                            <div class="scale-option">
+                                <input type="radio" name="q15" value="3" id="q15_3">
+                                <label for="q15_3">3</label>
+                            </div>
+                            <div class="scale-option">
+                                <input type="radio" name="q15" value="4" id="q15_4">
+                                <label for="q15_4">4</label>
+                            </div>
+                            <div class="scale-option">
+                                <input type="radio" name="q15" value="5" id="q15_5">
+                                <label for="q15_5">5</label>
+                            </div>
+                        </div>
+                        <div class="scale-labels">
+                            <span>Nunca</span>
+                            <span>Raramente</span>
+                            <span>Às vezes</span>
+                            <span>Frequentemente</span>
+                            <span>Sempre</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <button type="button" class="submit-btn" onclick="calculateResult()">
+                    🎯 Descobrir Meu Perfil de Liderança
+                </button>
+            </div>
+            
+            <div id="result" class="result">
+                <div class="profile">
+                    <h2 id="profile-title">Seu Perfil de Liderança 360°</h2>
+                    <p id="profile-description"></p>
+                    
+                    <div class="scores">
+                        <div class="score-item">
+                            <strong>🎯 Liderar a Si Mesmo</strong>
+                            <div class="score-bar">
+                                <div class="score-fill" id="self-score"></div>
+                            </div>
+                            <span id="self-percentage"></span>
+                        </div>
+                        
+                        <div class="score-item">
+                            <strong>⬆️ Liderar para Cima</strong>
+                            <div class="score-bar">
+                                <div class="score-fill" id="up-score"></div>
+                            </div>
+                            <span id="up-percentage"></span>
+                        </div>
+                        
+                        <div class="score-item">
+                            <strong>↔️ Liderar para os Lados</strong>
+                            <div class="score-bar">
+                                <div class="score-fill" id="side-score"></div>
+                            </div>
+                            <span id="side-percentage"></span>
+                        </div>
+                        
+                        <div class="score-item">
+                            <strong>⬇️ Liderar para Baixo</strong>
+                            <div class="score-bar">
+                                <div class="score-fill" id="down-score"></div>
+                            </div>
+                            <span id="down-percentage"></span>
+                        </div>
+                        
+                        <div class="score-item">
+                            <strong>✨ Liderar pelo Exemplo</strong>
+                            <div class="score-bar">
+                                <div class="score-fill" id="example-score"></div>
+                            </div>
+                            <span id="example-percentage"></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="recommendations">
+                    <h3>🎯 Seu Plano de Desenvolvimento Personalizado</h3>
+                    <div id="development-plan"></div>
+                    
+                    <h3>📚 Leituras Recomendadas</h3>
+                    <div id="reading-recommendations"></div>
+                    
+                    <h3>🚀 Próximos Passos</h3>
+                    <div id="next-steps"></div>
+                </div>
+                
+                <button class="restart-btn" onclick="restartQuiz()">
+                    🔄 Fazer o Quiz Novamente
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function calculateResult() {
+            // Verificar se todas as perguntas foram respondidas
+            const totalQuestions = 15;
+            let answeredQuestions = 0;
+            
+            for (let i = 1; i <= totalQuestions; i++) {
+                const question = document.querySelector(`input[name="q${i}"]:checked`);
+                if (question) {
+                    answeredQuestions++;
+                }
+            }
+            
+            if (answeredQuestions < totalQuestions) {
+                alert('Por favor, responda todas as perguntas antes de continuar.');
+                return;
+            }
+            
+            // Calcular pontuações por categoria
+            const scores = {
+                self: calculateCategoryScore([1, 2, 3]),
+                up: calculateCategoryScore([4, 5, 6]),
+                side: calculateCategoryScore([7, 8, 9]),
+                down: calculateCategoryScore([10, 11, 12]),
+                example: calculateCategoryScore([13, 14, 15])
+            };
+            
+            // Calcular percentuais
+            const percentages = {
+                self: Math.round((scores.self / 15) * 100),
+                up: Math.round((scores.up / 15) * 100),
+                side: Math.round((scores.side / 15) * 100),
+                down: Math.round((scores.down / 15) * 100),
+                example: Math.round((scores.example / 15) * 100)
+            };
+            
+            // Determinar perfil
+            const profile = determineProfile(percentages);
+            
+            // Mostrar resultados
+            displayResults(percentages, profile);
+            
+            // Esconder quiz e mostrar resultado
+            document.getElementById('quiz').style.display = 'none';
+            document.getElementById('result').style.display = 'block';
+            
+            // Animar barras de progresso
+            setTimeout(() => {
+                animateScoreBars(percentages);
+            }, 500);
+        }
+        
+        function calculateCategoryScore(questionNumbers) {
+            let total = 0;
+            questionNumbers.forEach(num => {
+                const answer = document.querySelector(`input[name="q${num}"]:checked`);
+                if (answer) {
+                    total += parseInt(answer.value);
+                }
+            });
+            return total;
+        }
+        
+        function determineProfile(percentages) {
+            const average = Object.values(percentages).reduce((a, b) => a + b, 0) / 5;
+            const lowest = Math.min(...Object.values(percentages));
+            const lowestCategory = Object.keys(percentages).find(key => percentages[key] === lowest);
+            
+            let profileTitle, description, focusArea;
+            
+            if (average >= 80) {
+                profileTitle = "🌟 LÍDER 360° EXEMPLAR";
+                description = "Parabéns! Você demonstra excelência em todas as direções da liderança. Continue sendo uma referência para outros!";
+            } else if (average >= 65) {
+                profileTitle = "🚀 LÍDER 360° EM DESENVOLVIMENTO";
+                description = "Você está no caminho certo! Já demonstra boas práticas de liderança em várias direções.";
+            } else if (average >= 50) {
+                profileTitle = "🌱 LÍDER 360° INICIANTE";
+                description = "Você está começando sua jornada de liderança 360°. Há muito potencial para crescer!";
+            } else {
+                profileTitle = "🎯 FUTURO LÍDER 360°";
+                description = "Esta é sua oportunidade de começar a desenvolver suas habilidades de liderança em todas as direções!";
+            }
+            
+            // Determinar área de foco
+            const categoryNames = {
+                self: "Autoliderança",
+                up: "Liderança para Cima",
+                side: "Liderança para os Lados",
+                down: "Liderança para Baixo",
+                example: "Liderança pelo Exemplo"
+            };
+            
+            focusArea = categoryNames[lowestCategory];
+            
+            return { title: profileTitle, description, focusArea, lowestCategory };
+        }
+        
+        function displayResults(percentages, profile) {
+            document.getElementById('profile-title').textContent = profile.title;
+            document.getElementById('profile-description').textContent = profile.description;
+            
+            // Mostrar percentuais
+            document.getElementById('self-percentage').textContent = percentages.self + '%';
+            document.getElementById('up-percentage').textContent = percentages.up + '%';
+            document.getElementById('side-percentage').textContent = percentages.side + '%';
+            document.getElementById('down-percentage').textContent = percentages.down + '%';
+            document.getElementById('example-percentage').textContent = percentages.example + '%';
+            
+            // Gerar plano de desenvolvimento
+            generateDevelopmentPlan(profile, percentages);
+            generateReadingRecommendations(profile);
+            generateNextSteps(profile, percentages);
+        }
+        
+        function animateScoreBars(percentages) {
+            document.getElementById('self-score').style.width = percentages.self + '%';
+            document.getElementById('up-score').style.width = percentages.up + '%';
+            document.getElementById('side-score').style.width = percentages.side + '%';
+            document.getElementById('down-score').style.width = percentages.down + '%';
+            document.getElementById('example-score').style.width = percentages.example + '%';
+        }
+        
+        function generateDevelopmentPlan(profile, percentages) {
+            const plans = {
+                self: {
+                    title: "🎯 Foco: Fortalecendo sua Autoliderança",
+                    activities: [
+                        "Estabeleça metas pessoais claras e acompanhe seu progresso semanalmente",
+                        "Pratique técnicas de gestão do tempo como Pomodoro ou Time Blocking",
+                        "Desenvolva uma rotina matinal que prepare você para ser produtivo",
+                        "Busque feedback regular sobre seu desempenho e atitude",
+                        "Invista em cursos ou livros sobre desenvolvimento pessoal"
+                    ]
+                },
+                up: {
+                    title: "⬆️ Foco: Melhorando a Liderança para Cima",
+                    activities: [
+                        "Agende reuniões regulares 1:1 com seu gestor para entender prioridades",
+                        "Antecipe necessidades: pergunte 'Como posso facilitar seu trabalho?'",
+                        "Prepare relatórios proativos sobre seus projetos e resultados",
+                        "Quando trouxer problemas, sempre inclua 2-3 sugestões de solução",
+                        "Observe o estilo de comunicação do seu gestor e adapte-se"
+                    ]
+                },
+                side: {
+                    title: "↔️ Foco: Desenvolvendo a Colaboração Lateral",
+                    activities: [
+                        "Organize sessões de compartilhamento de conhecimento com colegas",
+                        "Ofereça ajuda proativamente quando vir colegas sobrecarregados",
+                        "Crie um grupo de WhatsApp para troca de dicas e apoio mútuo",
+                        "Reconheça publicamente as boas ideias e conquistas dos colegas",
+                        "Proponha projetos colaborativos entre diferentes áreas"
+                    ]
+                },
+                down: {
+                    title: "⬇️ Foco: Desenvolvendo Outros",
+                    activities: [
+                        "Torne-se mentor informal de um novo funcionário",
+                        "Ofereça-se para treinar colegas em suas áreas de expertise",
+                        "Dê feedback construtivo e específico para ajudar outros a crescer",
+                        "Compartilhe recursos úteis (artigos, vídeos, cursos) com a equipe",
+                        "Incentive e celebre os sucessos das pessoas ao seu redor"
+                    ]
+                },
+                example: {
+                    title: "✨ Foco: Sendo um Exemplo a Ser Seguido",
+                    activities: [
+                        "Defina seus valores pessoais e profissionais e pratique-os diariamente",
+                        "Mantenha consistência entre o que você fala e o que faz",
+                        "Seja pontual e confiável em todos os seus compromissos",
+                        "Demonstre resiliência e positividade em situações desafiadoras",
+                        "Busque constantemente formas de melhorar a qualidade do seu trabalho"
+                    ]
+                }
+            };
+            
+            const plan = plans[profile.lowestCategory];
+            let html = `<h4>${plan.title}</h4><ul>`;
+            plan.activities.forEach(activity => {
+                html += `<li>${activity}</li>`;
+            });
+            html += '</ul>';
+            
+            document.getElementById('development-plan').innerHTML = html;
+        }
+        
+        function generateReadingRecommendations(profile) {
+            const books = {
+                self: [
+                    "📖 'O Poder do Hábito' - Charles Duhigg",
+                    "📖 'Mindset' - Carol Dweck",
+                    "📖 'Foco' - Daniel Goleman",
+                    "📖 'Os 7 Hábitos das Pessoas Altamente Eficazes' - Stephen Covey"
+                ],
+                up: [
+                    "📖 'Como Conquistar Amigos e Influenciar Pessoas' - Dale Carnegie",
+                    "📖 'O Gerente Eficaz' - Peter Drucker",
+                    "📖 'Crucial Conversations' - Kerry Patterson",
+                    "📖 'Getting to Yes' - Roger Fisher"
+                ],
+                side: [
+                    "📖 'Five Dysfunctions of a Team' - Patrick Lencioni",
+                    "📖 'Crucial Conversations' - Kerry Patterson",
+                    "📖 'Getting to Yes' - Roger Fisher",
+                    "📖 'Nonviolent Communication' - Marshall Rosenberg"
+                ],
+                down: [
+                    "📖 'The Coaching Habit' - Michael Bungay Stanier",
+                    "📖 'Leaders Eat Last' - Simon Sinek",
+                    "📖 'The One Minute Manager' - Ken Blanchard",
+                    "📖 'Multipliers' - Liz Wiseman"
+                ],
+                example: [
+                    "📖 'Integrity' - Henry Cloud",
+                    "📖 'The Character of Leadership' - Mark Miller",
+                    "📖 'Leading by Example' - John Baldoni",
+                    "📖 'Authentic Leadership' - Bill George"
+                ]
+            };
+            
+            const recommendations = books[profile.lowestCategory] || books.self;
+            let html = '<ul>';
+            recommendations.forEach(book => {
+                html += `<li>${book}</li>`;
+            });
+            html += '</ul>';
+            
+            document.getElementById('reading-recommendations').innerHTML = html;
+        }
+        
+        function generateNextSteps(profile, percentages) {
+            const steps = [
+                "📝 Escolha UMA área de desenvolvimento para focar nas próximas 4 semanas",
+                "🎯 Defina uma meta específica e mensurável para essa área",
+                "📅 Agende 15 minutos por semana para autoavaliação e ajustes",
+                "🤝 Encontre um 'buddy' na empresa para trocar experiências e feedback",
+                "🏆 Celebre pequenas vitórias no caminho da sua evolução como líder"
+            ];
+            
+            let html = '<ul>';
+            steps.forEach(step => {
+                html += `<li>${step}</li>`;
+            });
+            html += '</ul>';
+            
+            document.getElementById('next-steps').innerHTML = html;
+        }
+        
+        function restartQuiz() {
+            // Limpar todas as respostas
+            const inputs = document.querySelectorAll('input[type="radio"]');
+            inputs.forEach(input => input.checked = false);
+            
+            // Mostrar quiz e esconder resultado
+            document.getElementById('quiz').style.display = 'block';
+            document.getElementById('result').style.display = 'none';
+            
+            // Scroll para o topo
+            window.scrollTo(0, 0);
+        }
+    </script>
+</body>
+</html>
