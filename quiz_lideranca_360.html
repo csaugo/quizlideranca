@@ -987,7 +987,11 @@
                     <h3>📚 Leituras Recomendadas</h3>
                     <div id="reading-recommendations"></div>
                     
-                    <h3>🚀 Próximos Passos</h3>
+                    
+<h3>🎓 Cursos Recomendados</h3>
+<div id="course-recommendations"></div>
+
+<h3>🚀 Próximos Passos</h3>
                     <div id="next-steps"></div>
                 </div>
                 
@@ -1110,6 +1114,7 @@
             // Gerar plano de desenvolvimento
             generateDevelopmentPlan(profile, percentages);
             generateReadingRecommendations(profile);
+            generateCourseRecommendations(profile);
             generateNextSteps(profile, percentages);
         }
         
@@ -1229,7 +1234,73 @@
             document.getElementById('reading-recommendations').innerHTML = html;
         }
         
-        function generateNextSteps(profile, percentages) {
+        
+const courses = {
+  self: [
+    "10 dicas para falar com objetividade",
+    "19 dicas para usar a vírgula",
+    "6 Dicas para Abordar seus Clientes",
+    "8 motivações de Yu-Kai Chou: o modelo Octalysis de gamificação e engajamento",
+    "A experiência do cliente",
+    "A formatação de uma proposta de valor",
+    "A gestão dos planos de benefícios",
+    "A Importância do Hedge",
+    "A Importância do Hedge - PCDV",
+    "A nova reunião: práticas para reuniões online",
+  ],
+  up: [
+    "Experiência do Funcionário: como a alta liderança pode contribuir para a melhoria da jornada do funcionário",
+  ],
+  side: [
+    "Aprofundando a Comunicação Não Violenta",
+    "Aprofundando a Comunicação Não Violenta - PCDV",
+    "Colaboração criativa",
+    "Colaboração em equipes distribuídas",
+    "Como utilizar a comunicação não violenta",
+    "Educação: o Grupo e o Trabalho em Equipe",
+    "Educação: o Grupo e o Trabalho em Equipe - PCDV",
+    "Game Comunicação Não Violenta",
+    "Game Comunicação Não Violenta – Pessoas com Deficiência Visual",
+    "Jornada Tô On no BB - Comunicação Não Violenta",
+  ],
+  down: [
+    "Coaching Programa Liderança Feminina - Sessão 1",
+    "Coaching Programa Liderança Feminina - Sessão 2",
+    "Coaching Programa Liderança Feminina - Sessão 3",
+    "Coaching Programa Liderança Feminina - Sessão 4",
+    "Coaching Programa Liderança Feminina - Sessão 5",
+    "Direcione e motive pessoas com feedbacks e elogios",
+    "Feedback: Crescendo Juntos pelo Diálogo",
+    "Feedback: Crescendo Juntos pelo Diálogo - PCDV",
+    "Mentoria",
+    "Mentoria 1",
+  ],
+  example: [
+    "El Banco do Brasil cuida valores",
+    "Ética e Boas Práticas de Relacionamento",
+    "Ética: Um Olhar Atemporal",
+    "Gestão de Valores no BB",
+    "Introdução à Segurança Cibernética do Banco do Brasil",
+    "Introdução à Segurança Cibernética do Banco do Brasil - PCDV",
+    "Jornada Tô On no BB - Ética",
+    "Movimentação de Valores em Espécie - PLD/FT",
+    "O Banco do Brasil cuida de valores",
+    "O Banco do Brasil cuida de valores - PCDV",
+  ],
+};
+
+function generateCourseRecommendations(profile) {
+    const selectedCourses = courses[profile.lowestCategory] || courses.self;
+    let html = "<ul>";
+    selectedCourses.forEach(course => {
+        html += `<li>🎓 ${course}</li>`;
+    });
+    html += "</ul>";
+    document.getElementById("course-recommendations").innerHTML = html;
+}
+
+
+function generateNextSteps(profile, percentages) {
             const steps = [
                 "📝 Escolha UMA área de desenvolvimento para focar nas próximas 4 semanas",
                 "🎯 Defina uma meta específica e mensurável para essa área",
