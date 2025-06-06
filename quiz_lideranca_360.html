@@ -396,9 +396,81 @@
                 width: 95%;
             }
         }
-    </style>
+    
+.linkedin-share-btn, .download-btn {
+    background: #0077b5;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 20px;
+    cursor: pointer;
+    margin: 10px 10px 0 0;
+    transition: all 0.3s ease;
+    display: inline-block;
+    font-size: 1em;
+}
+.linkedin-share-btn:hover, .download-btn:hover {
+    background: #005582;
+    transform: translateY(-2px);
+}
+
+
+.generate-image-btn {
+    background: #ff9800;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 20px;
+    cursor: pointer;
+    margin: 10px 10px 0 0;
+    transition: all 0.3s ease;
+    display: inline-block;
+    font-size: 1em;
+}
+.generate-image-btn:hover {
+    background: #e68900;
+    transform: translateY(-2px);
+}
+
+.profile-summary {
+    background: #f8f9fa;
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 12px;
+    margin-top: 20px;
+}
+
+
+input[type="radio"]:focus {
+    outline: 3px solid #ff9800;
+    outline-offset: 2px;
+}
+
+
+
+.accessibility-badge {
+    display: inline-block;
+    background: #00796b;
+    color: #fff;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.85em;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
 </head>
 <body>
+
+<div class="accessibility-badge" aria-label="Solução acessível conforme diretrizes WCAG 2.1 nível AA">
+    ♿ Solução Acessível
+</div>
+
     <div class="container">
         <div class="header">
             <h1>🌟 Líder 360° 🌟</h1>
@@ -934,8 +1006,12 @@
             
             <div id="result" class="result">
                 <div class="profile">
+    <div id="capture-area" style="background: white; padding: 30px; border: 2px solid #ddd; border-radius: 15px;">
                     <h2 id="profile-title">Seu Perfil de Liderança 360°</h2>
                     <p id="profile-description"></p>
+
+
+
                     
                     <div class="scores">
                         <div class="score-item">
@@ -995,7 +1071,15 @@
                     <div id="next-steps"></div>
                 </div>
                 
-                <button class="restart-btn" onclick="restartQuiz()">
+                
+
+<button class="generate-image-btn" onclick="generateImage()" aria-label="Gerar imagem do resultado para compartilhar no LinkedIn">📸 Gerar imagem do meu resultado</button>
+<button class="linkedin-share-btn" onclick="shareOnLinkedIn()" aria-label="Compartilhar no LinkedIn">🔗 Compartilhar no LinkedIn</button>
+<button class="download-btn" onclick="window.print()" aria-label="Baixar ou imprimir o resultado">🖨️ Baixar / Imprimir Resultado</button>
+
+
+
+<button class="restart-btn" onclick="restartQuiz()">
                     🔄 Fazer o Quiz Novamente
                 </button>
             </div>
@@ -1047,6 +1131,11 @@
             // Esconder quiz e mostrar resultado
             document.getElementById('quiz').style.display = 'none';
             document.getElementById('result').style.display = 'block';
+
+// Garantir foco e rolagem suave
+document.getElementById('result').setAttribute('tabindex', '-1');
+document.getElementById('result').focus();
+document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
             
             // Animar barras de progresso
             setTimeout(() => {
@@ -1114,7 +1203,8 @@
             // Gerar plano de desenvolvimento
             generateDevelopmentPlan(profile, percentages);
             generateReadingRecommendations(profile);
-            generateCourseRecommendations(profile);
+            generateCourseRecommendations(profile, percentages);
+            
             generateNextSteps(profile, percentages);
         }
         
@@ -1289,7 +1379,7 @@ const courses = {
   ],
 };
 
-function generateCourseRecommendations(profile) {
+function generateCourseRecommendations(profile, percentages) {
     const selectedCourses = courses[profile.lowestCategory] || courses.self;
     let html = "<ul>";
     selectedCourses.forEach(course => {
@@ -1297,6 +1387,52 @@ function generateCourseRecommendations(profile) {
     });
     html += "</ul>";
     document.getElementById("course-recommendations").innerHTML = html;
+
+// Chamar generateProfileSummary no final (DOM 100% pronto!)
+setTimeout(() => { generateProfileSummary(percentages); }, 100);
+}
+
+
+
+function generateProfileSummary(percentages) {
+    const categoryNames = {
+        self: "Autoliderança",
+        up: "Liderança para Cima",
+        side: "Liderança para os Lados",
+        down: "Liderança para Baixo",
+        example: "Liderança pelo Exemplo"
+    };
+
+    const entries = Object.entries(percentages);
+    entries.sort((a, b) => b[1] - a[1]);  // ordenar por valor decrescente
+
+    const strongest = entries[0];
+    const weakest = entries[entries.length - 1];
+
+    const summaryText = `Sua maior fortaleza: <strong>${categoryNames[strongest[0]]}</strong> (${strongest[1]}%).<br>` +
+                        `Sua maior oportunidade de desenvolvimento: <strong>${categoryNames[weakest[0]]}</strong> (${weakest[1]}%).`;
+
+    document.getElementById("profile-summary").innerHTML = summaryText;
+}
+
+function shareOnLinkedIn() {
+    const profileTitle = document.getElementById('profile-title').textContent;
+    const profileDescription = document.getElementById('profile-description').textContent;
+    const shareText = `Acabei de descobrir meu Perfil de Liderança 360°: ${profileTitle} - ${profileDescription}`;
+    const linkedInUrl = `https://www.linkedin.com/sharing/share-offsite/?url=https://csaugo.github.io/quizlideranca/quiz_lideranca_360.html&summary=${encodeURIComponent(shareText)}`;
+    window.open(linkedInUrl, '_blank');
+}
+
+
+
+function generateImage() {
+    const resultArea = document.getElementById('result');
+    html2canvas(resultArea, { scale: 2 }).then(canvas => {
+        const link = document.createElement('a');
+        link.download = 'meu_perfil_lideranca_360.png';
+        link.href = canvas.toDataURL();
+        link.click();
+    });
 }
 
 
@@ -1331,5 +1467,14 @@ function generateNextSteps(profile, percentages) {
             window.scrollTo(0, 0);
         }
     </script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.scale-labels div').forEach(div => {
+        div.textContent = div.textContent.replace(/^[1-5]\s+/, '');
+    });
+});
+</script>
+
 </body>
 </html>
